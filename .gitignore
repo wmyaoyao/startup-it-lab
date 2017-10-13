@@ -1,2 +1,6 @@
-certs/
-volumes/
+# gitlab-oneclick
+gitlab-oneclick/certs/
+gitlab-oneclick/volumes/
+
+# openproject
+openproject/volumes/
