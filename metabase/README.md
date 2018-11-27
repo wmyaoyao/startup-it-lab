@@ -1,5 +1,9 @@
 # Data visulization with metabase
 
 ```
-./run.sh
+# To start:
+docker-compose up -d
+
+# To kill:
+docker-compose down
 ```
