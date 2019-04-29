@@ -1,0 +1,56 @@
+version: '2.1'
+
+# Reference:
+# https://github.com/teamatldocker/confluence/blob/master/docker-compose.yml
+# Thirdly, configure your Confluence yourself and fill it with a test license.
+#
+# Choose Production Installation because we have a postgres!
+# Enter license information
+# In Choose a Database Configuration choose PostgeSQL and press External Database
+# In Configure Database press Direct JDBC
+# In Configure Database fill out the form:
+#    Driver Class Name: org.postgresql.Driver
+#    Database URL: jdbc:postgresql://postgres-atlassian:5432/confluencedb
+#    User Name: confluence
+#    Password: password
+
+
+services:
+  postgres-atlassian:
+    image: postgres
+    container_name: postgres-atlassian
+    environment:
+      - 'POSTGRES_USER=confluence'
+      # CHANGE THE PASSWORD!
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_DB=confluencedb'
+      - 'POSTGRES_ENCODING=UTF8'
+      - 'POSTGRES_COLLATE=C'
+      - 'POSTGRES_COLLATE_TYPE=C'
+    volumes:
+      - ./volumes/postgresqldata:/var/lib/postgresql/data
+    restart: always
+    logging:
+      options:
+        max-size: "5M"
+        max-file: "10"
+      driver: json-file
+
+  confluence:
+    image: atlassian/confluence-server
+    container_name: confluence
+    ports:
+    - 8090:8090
+    - 8091:8091
+    volumes:
+    - ./volumes/confluence-home:/var/atlassian/application-data/confluence
+    restart: always
+    logging:
+      options:
+        max-size: "5M"
+        max-file: "10"
+      driver: json-file
+    links:
+      - "postgres-atlassian"
+    depends_on:
+      - "postgres-atlassian"
