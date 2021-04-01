@@ -9,12 +9,16 @@ echo "VOLUME=$VOLUME"
 # You may want to change this password...
 ADMIN_PAGE_PASS=bwadmin
 
+
 docker rm -fv bitwarden
 docker run -d --name bitwarden \
 	-v $VOLUME:/data/ \
 	-p 8090:80 \
 	-e ADMIN_TOKEN=$ADMIN_PAGE_PASS \
        bitwardenrs/server:latest
+
+# More docker run env at:
+# https://github.com/dani-garcia/bitwarden_rs/blob/master/.env.template
 
 echo ""
 echo "# NOTE: "
